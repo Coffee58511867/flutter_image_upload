@@ -181,7 +181,11 @@ class _UploadImagePageState extends State<UploadImagePage2> {
             const SizedBox(height: 12.0),
             if (_image != null) ...[
               const SizedBox(height: 16.0),
-              Image.file(_image!, height: 200),
+              Image.file(
+                _image!,
+                height: 200,
+                width: 300,
+              ),
             ],
             const SizedBox(height: 12.0),
             ElevatedButton(
