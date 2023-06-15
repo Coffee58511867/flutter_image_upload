@@ -5,14 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class UploadImagePage extends StatefulWidget {
-  const UploadImagePage({Key? key}) : super(key: key);
+class UploadImagePage2 extends StatefulWidget {
+  const UploadImagePage2({Key? key}) : super(key: key);
 
   @override
-  State<UploadImagePage> createState() => _UploadImagePageState();
+  State<UploadImagePage2> createState() => _UploadImagePageState();
 }
 
-class _UploadImagePageState extends State<UploadImagePage> {
+class _UploadImagePageState extends State<UploadImagePage2> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController amountController = TextEditingController();
 
@@ -28,51 +28,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
       setState(() {
         _image = File(pickedImage.path);
       });
-    }
-  }
-
-  Future<void> _uploadImage() async {
-    if (_image != null) {
-      try {
-        final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-        final destination = 'images/$fileName.png';
-
-        final ref = firebase_storage.FirebaseStorage.instance.ref(destination);
-        final uploadTask = ref.putFile(_image!);
-
-        final snapshot = await uploadTask.whenComplete(() {});
-
-        if (snapshot.state == firebase_storage.TaskState.success) {
-          final downloadUrl = await ref.getDownloadURL();
-          setState(() {
-            _imageUrl = downloadUrl;
-          });
-          Fluttertoast.showToast(
-            msg: "Image uploaded successfully",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.black54,
-            textColor: Colors.green,
-          );
-        } else {
-          Fluttertoast.showToast(
-            msg: "Image upload failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.black54,
-            textColor: Colors.red,
-          );
-        }
-      } catch (e) {
-        print('Error uploading image: $e');
-        Fluttertoast.showToast(
-          msg: "Something went wrong, please try again",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.black54,
-          textColor: Colors.red,
-        );
-      }
     }
   }
 
@@ -105,6 +60,34 @@ class _UploadImagePageState extends State<UploadImagePage> {
     // Proceed with payment if both fields are valid
     if (amountErrorText == null && phoneErrorText == null) {
       try {
+        // Upload image if available
+        if (_image != null) {
+          final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+          final destination = 'images/$fileName.png';
+
+          final ref =
+              firebase_storage.FirebaseStorage.instance.ref(destination);
+          final uploadTask = ref.putFile(_image!);
+
+          final snapshot = await uploadTask.whenComplete(() {});
+
+          if (snapshot.state == firebase_storage.TaskState.success) {
+            final downloadUrl = await ref.getDownloadURL();
+            setState(() {
+              _imageUrl = downloadUrl;
+            });
+          } else {
+            Fluttertoast.showToast(
+              msg: "Image upload failed",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.black54,
+              textColor: Colors.red,
+            );
+            return;
+          }
+        }
+
         // Create a map of the data you want to send
         Map<String, dynamic> paymentData = {
           'amount': amount,
@@ -151,31 +134,6 @@ class _UploadImagePageState extends State<UploadImagePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 16.0),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              style: ButtonStyle(
-                fixedSize: MaterialStateProperty.all<Size>(
-                  const Size(250, 30),
-                ),
-              ),
-              onPressed: _pickImage,
-              child: const Text('Select Image'),
-            ),
-            if (_image != null) ...[
-              const SizedBox(height: 16.0),
-              Image.file(_image!, height: 200),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all<Size>(
-                    const Size(250, 30),
-                  ),
-                ),
-                onPressed: _uploadImage,
-                child: const Text('Upload Image'),
-              ),
-            ],
-            const SizedBox(height: 16.0),
             TextField(
               controller: phoneController,
               onChanged: (value) {
@@ -220,9 +178,21 @@ class _UploadImagePageState extends State<UploadImagePage> {
                   const Size(250, 30),
                 ),
               ),
-              onPressed: _payment,
-              child: const Text('Proceed to Pay'),
+              onPressed: () {
+                if (_image == null) {
+                  _pickImage();
+                } else {
+                  _payment();
+                }
+              },
+              child: _image == null
+                  ? const Text('Select Image')
+                  : const Text('Proceed to Pay'),
             ),
+            if (_image != null) ...[
+              const SizedBox(height: 16.0),
+              Image.file(_image!, height: 200),
+            ],
           ],
         ),
       ),

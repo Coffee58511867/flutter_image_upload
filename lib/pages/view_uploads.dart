@@ -12,9 +12,6 @@ class _UploadsPageState extends State<UploadsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Uploads'),
-      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('payments').snapshots(),
         builder: (context, snapshot) {
