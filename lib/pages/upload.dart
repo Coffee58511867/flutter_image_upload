@@ -63,7 +63,8 @@ class _UploadImagePageState extends State<UploadImagePage2> {
         // Upload image if available
         if (_image != null) {
           final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-          final destination = 'images/$fileName.png';
+          final extension = _image!.path.split('.').last;
+          final destination = 'images/$fileName.$extension';
 
           final ref =
               firebase_storage.FirebaseStorage.instance.ref(destination);
