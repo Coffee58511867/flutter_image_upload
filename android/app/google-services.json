@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77033907832",
+    "project_id": "flutter-image-upload-2f000",
+    "storage_bucket": "flutter-image-upload-2f000.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77033907832:android:5987e736cd288306fbaf8d",
+        "android_client_info": {
+          "package_name": "com.example.image_upload"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77033907832-fit7eg8utfinvobho7cjsvpstk8lqogl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDr_rdOyteR853avu15IGkTnCjmrMn9qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77033907832-fit7eg8utfinvobho7cjsvpstk8lqogl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
