@@ -105,6 +105,12 @@ class _UploadImagePageState extends State<UploadImagePage2> {
         amountController.clear();
         phoneController.clear();
 
+        // Clear image
+        setState(() {
+          _image = null;
+          _imageUrl = null;
+        });
+
         Fluttertoast.showToast(
           msg: "Payment Made Successfully",
           toastLength: Toast.LENGTH_SHORT,
@@ -172,7 +178,12 @@ class _UploadImagePageState extends State<UploadImagePage2> {
                 errorText: amountErrorText,
               ),
             ),
-            const SizedBox(height: 24.0),
+            const SizedBox(height: 12.0),
+            if (_image != null) ...[
+              const SizedBox(height: 16.0),
+              Image.file(_image!, height: 200),
+            ],
+            const SizedBox(height: 12.0),
             ElevatedButton(
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all<Size>(
@@ -190,10 +201,6 @@ class _UploadImagePageState extends State<UploadImagePage2> {
                   ? const Text('Select Image')
                   : const Text('Proceed to Pay'),
             ),
-            if (_image != null) ...[
-              const SizedBox(height: 16.0),
-              Image.file(_image!, height: 200),
-            ],
           ],
         ),
       ),
