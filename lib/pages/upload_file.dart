@@ -137,7 +137,7 @@ class _UploadFilesPageState extends State<UploadFilesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(32.0),
+        padding: const EdgeInsets.all(35.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -188,7 +188,7 @@ class _UploadFilesPageState extends State<UploadFilesPage> {
             ElevatedButton(
               style: ButtonStyle(
                 fixedSize: MaterialStateProperty.all<Size>(
-                  const Size(250, 30),
+                  const Size(300, 40),
                 ),
               ),
               onPressed: () {
@@ -202,18 +202,14 @@ class _UploadFilesPageState extends State<UploadFilesPage> {
                   ? const Text('Select File')
                   : const Text('Proceed to Pay'),
             ),
-            ElevatedButton(
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all<Size>(
-                    const Size(250, 30),
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/viewfiles');
-                },
-                child: const Text("View Files"))
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/viewfiles');
+        },
+        child: const Icon(Icons.list_alt_outlined),
       ),
     );
   }
