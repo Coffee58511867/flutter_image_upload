@@ -202,6 +202,14 @@ class _UploadFilesPageState extends State<UploadFilesPage> {
                   ? const Text('Select File')
                   : const Text('Proceed to Pay'),
             ),
+            ElevatedButton(
+                style: ButtonStyle(
+                  fixedSize: MaterialStateProperty.all<Size>(
+                    const Size(250, 30),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text("View Files"))
           ],
         ),
       ),

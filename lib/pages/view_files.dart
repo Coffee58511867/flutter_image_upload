@@ -20,7 +20,7 @@ class _ViewFilesPageState extends State<ViewFilesPage> {
 
   Future<void> fetchPaymentDocuments() async {
     final snapshot =
-        await FirebaseFirestore.instance.collection('payments').get();
+        await FirebaseFirestore.instance.collection('documents').get();
     setState(() {
       _paymentDocuments = snapshot.docs;
     });
