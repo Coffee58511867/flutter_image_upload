@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 class ViewFilesPage extends StatefulWidget {
   const ViewFilesPage({Key? key}) : super(key: key);
@@ -26,11 +28,19 @@ class _ViewFilesPageState extends State<ViewFilesPage> {
     });
   }
 
-  Future<void> launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+  Future<void> downloadFile(String url) async {
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final directory = await getApplicationDocumentsDirectory();
+      final fileExtension = url.split('.').last;
+      final filePath = '${directory.path}/file.$fileExtension';
+
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      print('File downloaded to: $filePath');
     } else {
-      print('Could not launch URL: $url');
+      print('Failed to download file. Status code: ${response.statusCode}');
     }
   }
 
@@ -39,6 +49,7 @@ class _ViewFilesPageState extends State<ViewFilesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('View Files'),
+        centerTitle: true,
       ),
       body: _paymentDocuments != null
           ? ListView.builder(
@@ -53,7 +64,7 @@ class _ViewFilesPageState extends State<ViewFilesPage> {
                   trailing: IconButton(
                     icon: const Icon(Icons.download),
                     onPressed: () {
-                      launchURL(fileUrl);
+                      downloadFile(fileUrl);
                     },
                   ),
                 );
