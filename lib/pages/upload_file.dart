@@ -208,7 +208,9 @@ class _UploadFilesPageState extends State<UploadFilesPage> {
                     const Size(250, 30),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/viewfiles');
+                },
                 child: const Text("View Files"))
           ],
         ),
